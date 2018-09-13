@@ -4,12 +4,14 @@
   "description": "This is simple blog using Express, Postgres and Vue",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon --watch server server/app.js "
   },
   "author": "Damis Garcia",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "faker": "^4.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
