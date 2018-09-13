@@ -1,12 +1,9 @@
+const path = require("path");
 const faker = require('faker');
 
 const Const = require('./index.const');
 
 const Router = (app) => {
-    app.get('/', (req, res) => {
-        res.status(Const.Status.OK).send('Hello my API!');
-    });
-
     app.get('/user', (req, res) => {
         let data = createUser();
 

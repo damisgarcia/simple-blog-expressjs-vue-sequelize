@@ -12,6 +12,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// servindo arquivos estáticos
+app.use(express.static('public'));
+
 /* 
 * Inicializando rotas do express, responsabilidade passada para o módulo routes/index.js
 */
