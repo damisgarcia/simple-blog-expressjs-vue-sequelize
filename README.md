@@ -1,1 +1,0 @@
-# simple-blog-expressjs-vue-sequelize
