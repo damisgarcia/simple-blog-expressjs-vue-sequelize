@@ -3,15 +3,15 @@ const faker = require('faker');
 const { Status } = require('../index.const');
 
 const UsersController = (app) => {
-    app.get('/user', (req, res) => {
+    app.get('/users/:id', (req, res) => {
         let data = createUser();
 
         res.status(Status.OK).send(data);
     });
 
-    app.get('/users/:num', (req, res) => {
+    app.get('/users', (req, res) => {
         var users = [];
-        var num = req.params.num;
+        var num = 30;
 
         if (isFinite(num) && num > 0) {
             for (i = 0; i <= num - 1; i++) {
