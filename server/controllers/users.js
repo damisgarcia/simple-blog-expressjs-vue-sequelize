@@ -1,39 +1,46 @@
+const { User } = require('../database/models');
 const faker = require('faker');
+
 
 const { Status } = require('../index.const');
 
-const UsersController = (app) => {
+const UsersController = (app) => {   
     app.get('/users/:id', (req, res) => {
-        let data = createUser();
-
-        res.status(Status.OK).send(data);
+        // res.send(req.params.id);
+        User.findById(req.params.id).then(user => {
+            res.status(Status.OK).send(user);
+        }).catch(err => {
+            res.status(Status.OK).send({ message: 'Usuário não exite ou não encotrado!' });
+        });
     });
 
     app.get('/users', (req, res) => {
-        var users = [];
-        var num = 30;
-
-        if (isFinite(num) && num > 0) {
-            for (i = 0; i <= num - 1; i++) {
-                users.push(createUser());
-            }
-
+        User.findAll().then(users => {
             res.status(Status.OK).send(users);
-
-        } else {
-            res.status(Status.FAIL).send({ message: 'Número informar é inválido' });
-        }
+        });        
     });
-}
 
-function createUser() {
-    return {
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        username: faker.internet.userName(),
-        email: faker.internet.email(),
-        avatarUrl: faker.image.avatar()
-    };
+    app.post('/users', (req, res) => {
+        User.create(req.body.user).then(user => {
+            res.status(Status.OK).send(user);
+        }).catch(err => {
+            res.status(Status.OK).send(err);
+        });
+    });
+
+    app.delete('/users/:id', (req, res) => {
+        // get user
+        User.findById(req.params.id).then(user => {
+            // delete user from database
+            user.destroy().then(() => {
+                res.status(Status.OK).send({ success: true });
+            }).catch(err => {
+                res.status(Status.FAIL).send(err)
+            });
+        }).catch(err => {
+            res.status(Status.FAIL).send(err);
+        });
+    });
 }
 
 module.exports = UsersController;
