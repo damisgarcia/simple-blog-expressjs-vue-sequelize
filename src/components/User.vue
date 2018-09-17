@@ -52,8 +52,8 @@ export default {
             if(!confirm('You really?')){
                 return false;
             }
-            
-            let payload = await this.resource.delete({id: user.id})
+
+            let payload = await this.resource.delete({id: user.id});
             
             await payload.json();
 
