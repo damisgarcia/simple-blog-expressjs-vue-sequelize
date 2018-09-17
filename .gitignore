@@ -20,3 +20,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+
+# Server
+/server/database/config/config.json

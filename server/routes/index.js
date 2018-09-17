@@ -4,6 +4,4 @@ const Router = (app) => {
     UsersController(app);
 };
 
-
-
 module.exports = Router;
