@@ -1,7 +1,4 @@
 const { User } = require('../database/models');
-const faker = require('faker');
-
-
 const { Status } = require('../index.const');
 
 const UsersController = (app) => {   
