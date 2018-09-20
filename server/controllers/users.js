@@ -1,6 +1,10 @@
 const { User } = require('../database/models');
 const { Status } = require('../index.const');
 
+const { pick} = require('lodash');
+
+const permitParams = ['name', 'email'];
+
 const UsersController = (app) => {   
     app.get('/users/:id', (req, res) => {
         // res.send(req.params.id);
@@ -18,10 +22,27 @@ const UsersController = (app) => {
     });
 
     app.post('/users', (req, res) => {
-        User.create(req.body.user).then(user => {
+        let body = pick(req.body.user, permitParams);
+        
+        User.create(body).then(user => {
             res.status(Status.OK).send(user);
         }).catch(err => {
             res.status(Status.OK).send(err);
+        });
+    });
+
+    app.put('/users/:id', (req, res) => {
+        let body = pick(req.body.user, permitParams);
+        // get user
+        User.findById(req.params.id).then(user => {
+            // update user from database
+            user.update(body).then((data) => {
+                res.status(Status.OK).send(data);
+            }).catch(err => {
+                res.status(Status.FAIL).send(err)
+            });
+        }).catch(err => {
+            res.status(Status.FAIL).send(err);
         });
     });
 

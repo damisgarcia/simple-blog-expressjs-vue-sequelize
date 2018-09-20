@@ -18,7 +18,7 @@
                     </v-icon>
                     <v-icon
                         small
-                        @click.stop="destroyUser(props.item)">
+                        @click.stop="confirmDeleteUser(props.item)">
                         delete
                     </v-icon>
                 </td>
@@ -41,23 +41,39 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-dialog v-model="confirmation" persistent max-width="500px">
+            <v-card>
+                <v-card-title class="display-1">Destroy User</v-card-title>
+                <v-card-text>
+                    <div class="subtitle">You really destroy this user?</div>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn @click.stop="closeDeleteUser()" flat>Cancelar</v-btn>
+                    <v-btn @click.stop="confirmDestroy(user)" flat color="danger">Ok</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
-import { findIndex } from 'lodash';
+import Vue from 'vue';
+import { findIndex, clone } from 'lodash';
 import UserResource from '../../services/UserResource';
 
 export default {
     data(){
         return {
             dialog: false,
+            confirmation: false,
             user: {},
-            users: Array,
+            users: [],
             headers: [
                 { text: 'Name', value: 'name'},
                 { text: 'Email', value: 'email' },
-                { text: 'Actions', value: 'name', sortable: false, align: 'right', }
+                { text: 'Actions', value: 'actions', sortable: false, align: 'right', }
             ]
         };
     },
@@ -71,7 +87,7 @@ export default {
     },
     methods: {
         async submit(){
-            this.user.id ? await this.createUser() : await this.updateUser()
+            this.user.id ? this.updateUser() : await await this.createUser();
         },
         async createUser(){
             let payload = await this.resource.create({ user: this.user });
@@ -85,28 +101,38 @@ export default {
             let payload = await this.resource.update({ id: this.user.id },{ user: this.user });
             let data = await payload.json();
 
+            let indexOf = findIndex(this.users, { id: this.user.id });
+
+            Vue.set(this.users, indexOf, data);
+
             this.user = {}; // clear instance
             this.dialog = false; // close dialog
         },
-        async destroyUser(user){
-            if(!confirm('You really?')){
-                return false;
-            }
-
-            let payload = await this.resource.delete({id: user.id});
+        async confirmDestroy(){
+            let payload = await this.resource.delete({id: this.user.id});
             
             await payload.json();
 
-            let indexOf = findIndex(this.users, { id: user.id });
+            let indexOf = findIndex(this.users, { id: this.user.id });
             this.users.splice(indexOf, 1);
+
+            this.closeDeleteUser();
         },
         editUser(user){
-            this.user = user;
+            this.user = clone(user);
             this.dialog = true;
+        },
+        confirmDeleteUser(user){
+            this.confirmation = true;
+            this.user = clone(user);
         },
         closeDialog(){
             this.user = {};
             this.dialog = false;
+        },
+        closeDeleteUser(){
+            this.user = {};
+            this.confirmation = false;
         }
     }
 }
