@@ -1,6 +1,8 @@
+import '@babel/polyfill'
 import './styles/main.scss';
 
 import Vue from 'vue'
+import './plugins/vuetify'
 import VueResource from 'vue-resource'
 
 Vue.use(VueResource);
