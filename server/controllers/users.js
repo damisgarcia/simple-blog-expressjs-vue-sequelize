@@ -3,18 +3,15 @@ const { Status } = require('../index.const');
 
 const { pick} = require('lodash');
 
-const permitParams = ['name', 'email'];
-
 const UsersController = (app) => {   
     app.get('/users/:id', (req, res) => {
-        // res.send(req.params.id);
         User.findById(req.params.id).then(user => {
             res.status(Status.OK).send(user);
         }).catch(err => {
             res.status(Status.OK).send({ message: 'Usuário não exite ou não encotrado!' });
         });
     });
-
+    
     app.get('/users', (req, res) => {
         User.findAll().then(users => {
             res.status(Status.OK).send(users);
@@ -22,9 +19,9 @@ const UsersController = (app) => {
     });
 
     app.post('/users', (req, res) => {
-        let body = pick(req.body.user, permitParams);
+        let user_params = permit_params(req.body.user);
         
-        User.create(body).then(user => {
+        User.create(user_params).then(user => {
             res.status(Status.OK).send(user);
         }).catch(err => {
             res.status(Status.OK).send(err);
@@ -32,11 +29,11 @@ const UsersController = (app) => {
     });
 
     app.put('/users/:id', (req, res) => {
-        let body = pick(req.body.user, permitParams);
+        let user_params = permit_params(req.body.user);
         // get user
         User.findById(req.params.id).then(user => {
             // update user from database
-            user.update(body).then((data) => {
+            user.update(user_params).then((data) => {
                 res.status(Status.OK).send(data);
             }).catch(err => {
                 res.status(Status.FAIL).send(err)
@@ -59,6 +56,10 @@ const UsersController = (app) => {
             res.status(Status.FAIL).send(err);
         });
     });
+}
+
+function permit_params(user){
+    return pick(user, ['name', 'email','role']);
 }
 
 module.exports = UsersController;

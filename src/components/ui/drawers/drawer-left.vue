@@ -3,7 +3,7 @@
       persistent
       :mini-variant="miniVariant"
       :clipped="clipped"
-      :value="isVisible"
+      v-model="drawer"
       enable-resize-watcher
       fixed
       app
@@ -27,9 +27,9 @@
 <script>
 export default {
     name: "drawer-left",
-    props: ['drawer'],
     data() {
         return{
+            drawer: false,
             clipped: false,
             miniVariant: false,
             items: [{
@@ -38,10 +38,16 @@ export default {
             }],
         }
     },
+    mounted(){
+      this.$root.$on('toggle:drawer:left', () => {
+        console.log('Drawer');
+        this.drawer = !this.drawer;
+      });
+    },
     computed: {
         isVisible(){
             return this.drawer
         }
-    }
+    }    
 }
 </script>

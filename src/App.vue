@@ -1,13 +1,13 @@
 <template>
   <v-app>
-    <drawer-left :drawer="drawer"></drawer-left>    
+    <blog-drawer-left></blog-drawer-left>    
     <v-toolbar app>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>     
+      <v-toolbar-side-icon @click.stop="togggleDrawer()"></v-toolbar-side-icon>     
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
-      <UsersView/>
+      <blog-users-view/>
     </v-content>
     <v-footer :fixed="true" app>
       <span>&copy; 2017</span>
@@ -18,20 +18,23 @@
 <script>
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
-import DrawerLeft from './components/ui/drawers/DrawerLeft';
-
-import UsersView from './components/views/User';
+import UI from './components/ui';
+import Views from './components/views';
 
 export default {
   name: 'App',
   components: {
-    UsersView,
-    DrawerLeft
+    ...Views,
+    ...UI
   },
   data () {
     return {
-      title: 'Vuetify.js',
-      drawer: false
+      title: 'Vuetify.js'
+    }
+  },
+  methods:{
+    togggleDrawer(){
+      this.$root.$emit('toggle:drawer:left', true);
     }
   }
 };

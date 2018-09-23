@@ -9,6 +9,7 @@
             <template slot="items" slot-scope="props">
                 <td>{{ props.item.name }}</td>
                 <td>{{ props.item.email }}</td>
+                <td>{{ props.item.role }}</td>
                 <td class="text-xs-right">                
                     <v-icon
                         small
@@ -29,22 +30,23 @@
 
         <v-dialog v-model="dialog" persistent max-width="500px">
             <v-card>
-                <v-card-title class="display-1">New User</v-card-title>
+                <v-card-title class="title">New User</v-card-title>
                 <v-card-text>
-                    <v-text-field v-model="user.name" placeholder="Name" />
-                    <v-text-field v-model="user.email" placeholder="Email" />
+                    <v-text-field v-model="user.name" placeholder="Name" :rules="[rules.required]"/>
+                    <v-text-field v-model="user.email" placeholder="Email" :rules="[rules.required, rules.email]"/>
+                    <v-select v-model="user.role" :items="rolesKeys" box label="Permissão" :rules="[rules.required]"></v-select>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn @click.stop="closeDialog()" flat>Cancelar</v-btn>
-                    <v-btn @click.stop="submit()" flat color="primary">Criar</v-btn>
+                    <v-btn @click.stop="submit()" flat color="primary">Confirmar</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
 
         <v-dialog v-model="confirmation" persistent max-width="500px">
             <v-card>
-                <v-card-title class="display-1">Destroy User</v-card-title>
+                <v-card-title class="title">Destroy User</v-card-title>
                 <v-card-text>
                     <div class="subtitle">You really destroy this user?</div>
                 </v-card-text>
@@ -60,8 +62,13 @@
 
 <script>
 import Vue from 'vue';
+import { required, email } from 'vuelidate/lib/validators';
+
 import { findIndex, clone } from 'lodash';
+
 import UserResource from '../../services/UserResource';
+
+import UserTypes from '../../types/user.types';
 
 export default {
     data(){
@@ -70,11 +77,17 @@ export default {
             confirmation: false,
             user: {},
             users: [],
+            roles: UserTypes.roles,
             headers: [
                 { text: 'Name', value: 'name'},
                 { text: 'Email', value: 'email' },
+                { text: 'Role', value: 'role' },
                 { text: 'Actions', value: 'actions', sortable: false, align: 'right', }
-            ]
+            ],
+            rules: {
+                required: value => required(value) || 'Required.',
+                email: value => email(value) || 'Email invalid.'
+            },
         };
     },
     beforeCreate(){
@@ -133,6 +146,11 @@ export default {
         closeDeleteUser(){
             this.user = {};
             this.confirmation = false;
+        }
+    },
+    computed:{
+        rolesKeys(){
+            return Object.keys(this.roles);
         }
     }
 }
