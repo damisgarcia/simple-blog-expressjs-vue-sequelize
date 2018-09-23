@@ -20,6 +20,11 @@ app.use(express.static('dist'));
 */
 routes(app);
 
+// Intercept 
+app.use('*', (req, res) => {
+    res.sendfile('./dist/index.html');
+});
+
 app.listen(PORT, () => {
     console.log(`This app listening on port ${PORT}!`);
 });

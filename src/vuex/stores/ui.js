@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 let state = {
     drawer: true,
 }
@@ -5,15 +7,12 @@ let state = {
 let actions = {
     toggleDrawer({ commit }) {
         commit('toggleDrawer');
-    },
-    toggleModal({ commit }) {
-        commit('toggleModal');
     }
 }
 
 let mutations = {
     toggleDrawer(state) {
-        state.drawer = !state.drawer;
+        Vue.set(state, 'drawer', !state.drawer)
     }
 }
 

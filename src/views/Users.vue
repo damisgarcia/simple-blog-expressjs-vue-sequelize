@@ -66,7 +66,7 @@
 import { clone } from 'lodash';
 import { required, email } from 'vuelidate/lib/validators';
 
-import UserTypes from '../../types/user.types';
+import UserTypes from '../types/user.types';
 
 export default {
     data(){
