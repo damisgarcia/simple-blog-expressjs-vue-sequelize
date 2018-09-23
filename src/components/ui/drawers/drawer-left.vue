@@ -1,9 +1,9 @@
 <template>
     <v-navigation-drawer
       persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      v-model="drawer"
+      :mini-variant="false"
+      :clipped="true"
+      v-model="$store.state.ui.drawer"
       enable-resize-watcher
       fixed
       app
@@ -30,8 +30,6 @@ export default {
     data() {
         return{
             drawer: false,
-            clipped: false,
-            miniVariant: false,
             items: [{
                 icon: 'bubble_chart',
                 title: 'Inspire'
@@ -40,14 +38,8 @@ export default {
     },
     mounted(){
       this.$root.$on('toggle:drawer:left', () => {
-        console.log('Drawer');
-        this.drawer = !this.drawer;
+        this.$store.dispatch('ui/toggleDrawer');
       });
-    },
-    computed: {
-        isVisible(){
-            return this.drawer
-        }
     }    
 }
 </script>
