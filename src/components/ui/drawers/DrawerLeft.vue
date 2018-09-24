@@ -23,8 +23,6 @@
     </v-navigation-drawer>
 </template>
 <script>
-import { mapState } from 'vuex'
-
 export default {
     name: "drawer-left",
     data() {
@@ -35,12 +33,16 @@ export default {
                 route: '/'
               },
               {
-                title: 'Users',
-                route: 'users'
+                title: 'About',
+                route: '/about'
               },
               {
-                title: 'About',
-                route: 'about'
+                title: 'Users',
+                route: '/users'
+              },
+              {
+                title: 'Posts',
+                route: '/posts'
               }
             ]            
         }

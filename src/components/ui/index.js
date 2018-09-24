@@ -1,5 +1,5 @@
-import DrawerLeftComponent from './drawers/drawer-left';
+import DrawerLeft from './drawers/DrawerLeft';
 
 export default {
-    'blog-drawer-left': DrawerLeftComponent
+    'blog-drawer-left': DrawerLeft
 };
