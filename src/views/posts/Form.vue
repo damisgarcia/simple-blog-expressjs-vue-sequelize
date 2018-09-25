@@ -3,8 +3,8 @@
         <div class="display-1">{{title}}</div>
         <v-form ref="form" v-model="valid">
             <v-text-field v-model="post.title" placeholder="Title" :rules="[rules.required]"/>
-            <v-text-field v-model="post.body" placeholder="Body" :rules="[rules.required]"/>
             <v-select v-model="post.status" :items="statusesKeys" box label="Status" :rules="[rules.required]"></v-select>
+            <wysiwyg v-model="post.body" />
             <v-layout>
                 <v-spacer></v-spacer>
                 <v-btn to="/posts" flat>Cancelar</v-btn>
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { required } from 'vuelidate/lib/validators';
 import { isUndefined, clone } from 'lodash';
 
@@ -36,12 +35,14 @@ export default {
     created(){
         if(!isUndefined(this.$route.params.id)){
             let data = this.$store.state.posts.data[this.$route.params.id];
-            console.log(data);
             this.post = clone(data);
         }
     },
     methods: {
         submit(){
+            if(!this.valid && !this.post.body){
+                return false;
+            }
             if(!isUndefined(this.$route.params.id)){
                 this.$store.dispatch('posts/update', { index: this.$route.params.id, data: this.post });
                 this.$router.go(-1);

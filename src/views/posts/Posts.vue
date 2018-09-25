@@ -18,7 +18,7 @@
                     <v-btn flat icon :to="{ name: 'editPost', params: { id: props.index } }">
                         <v-icon small>edit</v-icon>
                     </v-btn>
-                    <v-btn flat icon :to="{ name: 'editPost', params: { id: props.index } }">
+                    <v-btn flat icon @click.stop="destroyPost(props.index)">
                         <v-icon small>delete</v-icon>
                     </v-btn>                    
                 </td>
@@ -28,14 +28,14 @@
 
         <!-- <v-dialog v-model="confirmation" persistent max-width="500px">
             <v-card>
-                <v-card-title class="title">Destroy User</v-card-title>
+                <v-card-title class="title">Destroy Post</v-card-title>
                 <v-card-text>
-                    <div class="subtitle">You really destroy this user?</div>
+                    <div class="subtitle">You really destroy this post?</div>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn @click.stop="closeDeleteUser()" flat>Cancelar</v-btn>
-                    <v-btn @click.stop="destroyUser(user)" flat color="error">Ok</v-btn>
+                    <v-btn @click.stop="closeConfirm()" flat>Cancelar</v-btn>
+                    <v-btn @click.stop="destroyPost(post)" flat color="error">Ok</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog> -->
@@ -46,12 +46,18 @@
 export default {
     data(){
         return{
+            confirmation: false,
             headers: [
                 { text: 'Title', value: 'title'},
                 { text: 'Body', value: 'body' },
                 { text: 'Status', value: 'status' },
                 { text: 'Actions', value: 'actions', sortable: false, align: 'right', }
             ]
+        }
+    },
+    methods: {
+        destroyPost(id){            
+            this.$store.dispatch('posts/destroy', id);
         }
     }
 }

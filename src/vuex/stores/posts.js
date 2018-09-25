@@ -1,6 +1,6 @@
 import Vue from 'vue';
 // import axios from 'axios';
-import { findIndex } from 'lodash';
+// import { findIndex } from 'lodash';
 
 // const baseurl = '/api';
 
@@ -34,11 +34,8 @@ const mutations = {
         let { data, index } = payload;
         Vue.set(state.data, index, data);
     },
-    destroy(state, payload) {
-        let indexOf = findIndex(state.data, { id: payload.id })
-        if (payload.success){
-            state.data.splice(indexOf, 1);
-        }
+    destroy(state, id) {
+        state.data.splice(id, 1);
     }
 }
 
