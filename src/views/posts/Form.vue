@@ -15,32 +15,40 @@
 </template>
 
 <script>
+import S from 'string';
 import { required } from 'vuelidate/lib/validators';
-import { isUndefined, clone } from 'lodash';
+import { isUndefined, find, clone } from 'lodash';
+
+import axios from 'axios';
 
 import PostTypes from '@/types/post.types';
+import { createECDH } from 'crypto';
 
 export default {
     props: ['id','title'],
     data(){
         return {
             valid: false,
-            post: {},
+            post: {
+                body: ''
+            },
             rules: {
                 required: value => required(value) || "Required"
             },
             statuses: PostTypes.statuses
         }
     },
-    created(){
+    async beforeCreate(){
         if(!isUndefined(this.$route.params.id)){
-            let data = this.$store.state.posts.data[this.$route.params.id];
-            this.post = clone(data);
+            let { data } = await axios.get(`/api/posts/${this.$route.params.id}`);
+            this.post = data;
         }
     },
     methods: {
         submit(){
-            if(!this.valid && !this.post.body){
+            let body = S(this.post.body).stripTags().s;
+
+            if(!this.valid || !body.length){
                 return false;
             }
             if(!isUndefined(this.$route.params.id)){

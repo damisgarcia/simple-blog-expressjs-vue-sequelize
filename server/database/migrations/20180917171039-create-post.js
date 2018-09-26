@@ -14,6 +14,10 @@ module.exports = {
       body: {
         type: Sequelize.TEXT
       },
+      status: {
+        allowNull: false,
+        type: Sequelize.ENUM("draft", "published", "omitted", "trash", "removed")
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

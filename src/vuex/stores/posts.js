@@ -1,25 +1,29 @@
 import Vue from 'vue';
-// import axios from 'axios';
-// import { findIndex } from 'lodash';
+import axios from 'axios';
+import { findIndex } from 'lodash';
 
-// const baseurl = '/api';
+const baseurl = '/api';
 
 const state = {
     data: []
 }
 
-const actions = {
-    get({state}, index){
-        return state.data[index];
+const actions = {    
+    async query({commit}){
+        let { data } = await axios.get(`${baseurl}/posts`);
+        commit('query', data);
     },
     async create({ commit }, payload) {
-        commit('create', payload);
+        let { data } = await axios.post(`${baseurl}/posts`, { post: payload });
+        commit('create', data);
     },
     async update({ commit }, payload) {        
-        commit('update', payload);
+        let { data } = await axios.put(`${baseurl}/posts/${payload.id}`, { post: payload });
+        commit('update', data);
     },
     async destroy({ commit }, payload) {
-        commit('destroy', payload);
+        let { data } = await axios.delete(`${baseurl}/posts/${payload.id}`);
+        commit('destroy', data);
     }
 }
 
@@ -31,11 +35,14 @@ const mutations = {
         state.data.push(payload);
     },
     update(state, payload) {
-        let { data, index } = payload;
-        Vue.set(state.data, index, data);
+        let indexOf = findIndex(state.data, { id: payload.id })
+        Vue.set(state.data, indexOf, data);
     },
-    destroy(state, id) {
-        state.data.splice(id, 1);
+    destroy(state, payload) {
+        let indexOf = findIndex(state.data, { id: payload.id })
+        if (payload.success) {
+            state.data.splice(indexOf, 1);
+        }
     }
 }
 
