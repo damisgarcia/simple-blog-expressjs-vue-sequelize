@@ -3,6 +3,7 @@ import './styles/main.scss';
 
 import Vue from 'vue';
 import './plugins/vuetify';
+import './plugins/vue-moment';
 import './plugins/wysiwyg';
 import VueResource from 'vue-resource';
 
@@ -19,4 +20,3 @@ new Vue({
   router,
   render: h => h(App)
 }).$mount('#app');
-

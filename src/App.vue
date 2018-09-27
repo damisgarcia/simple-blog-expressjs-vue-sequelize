@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar app>
+    <v-toolbar app dark :clipped-left="true">
       <v-toolbar-side-icon @click.stop="togggleDrawer()"></v-toolbar-side-icon>     
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>

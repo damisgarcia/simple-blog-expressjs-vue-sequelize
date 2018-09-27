@@ -1,6 +1,10 @@
 <template>
     <v-container>
-        <div class="display-1">Users</div>
+        <v-layout row>
+            <div class="display-1">Users</div>
+            <v-spacer></v-spacer>
+            <v-btn @click.stop="dialog = true" color="primary">New User</v-btn>
+        </v-layout>
         <v-data-table
             :headers="headers"
             :items="$store.state.users.data"
@@ -10,23 +14,22 @@
                 <td>{{ props.item.name }}</td>
                 <td>{{ props.item.email }}</td>
                 <td>{{ props.item.role }}</td>
-                <td class="text-xs-right">                
-                    <v-icon
-                        small
-                        class="mr-2"
-                        @click.stop="editUser(props.item)">
-                        edit
-                    </v-icon>
-                    <v-icon
-                        small
-                        @click.stop="confirmDeleteUser(props.item)">
-                        delete
-                    </v-icon>
+                <td class="text-xs-right">   
+                    <v-btn flat icon @click.stop="editUser(props.item)">
+                        <v-icon small>
+                            edit
+                        </v-icon>
+                    </v-btn>
+                    <v-btn flat icon @click.stop="confirmDeleteUser(props.item)">
+                        <v-icon small>
+                            delete
+                        </v-icon>
+                    </v-btn>
                 </td>
             </template>
         </v-data-table>
 
-        <v-btn @click.stop="dialog = true" color="primary">New User</v-btn>
+    
 
         <v-dialog v-model="dialog" persistent max-width="500px">
             <v-form ref="form" v-model="valid">

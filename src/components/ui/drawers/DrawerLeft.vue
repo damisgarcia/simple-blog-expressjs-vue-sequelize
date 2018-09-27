@@ -37,6 +37,10 @@ export default {
                 route: '/about'
               },
               {
+                title: 'Blog',
+                route: '/posts'
+              },
+              {
                 title: 'Users',
                 route: '/users'
               },

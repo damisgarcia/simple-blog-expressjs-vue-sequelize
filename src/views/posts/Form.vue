@@ -17,12 +17,11 @@
 <script>
 import S from 'string';
 import { required } from 'vuelidate/lib/validators';
-import { isUndefined, find, clone } from 'lodash';
+import { isUndefined } from 'lodash';
 
 import axios from 'axios';
 
 import PostTypes from '@/types/post.types';
-import { createECDH } from 'crypto';
 
 export default {
     props: ['id','title'],

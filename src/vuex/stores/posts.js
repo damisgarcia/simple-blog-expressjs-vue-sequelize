@@ -36,7 +36,7 @@ const mutations = {
     },
     update(state, payload) {
         let indexOf = findIndex(state.data, { id: payload.id })
-        Vue.set(state.data, indexOf, data);
+        Vue.set(state.data, indexOf, payload);
     },
     destroy(state, payload) {
         let indexOf = findIndex(state.data, { id: payload.id })

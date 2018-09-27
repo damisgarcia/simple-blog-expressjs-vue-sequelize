@@ -18,6 +18,9 @@
                     <v-btn flat icon :to="{ name: 'editPost', params: { id: props.item.id } }">
                         <v-icon small>edit</v-icon>
                     </v-btn>
+                    <v-btn flat icon :to="{ name: 'showPost', params: { id: props.item.id } }">
+                        <v-icon small>visibility</v-icon>
+                    </v-btn>
                     <v-btn flat icon @click.stop="openConfirmation(props.item)">
                         <v-icon small>delete</v-icon>
                     </v-btn>                    

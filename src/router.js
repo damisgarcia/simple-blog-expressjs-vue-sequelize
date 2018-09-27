@@ -41,6 +41,11 @@ export default new Router({
       }
     },
     {
+      path: '/posts/:id',
+      name: 'showPost',
+      component: () => import(/* webpackChunkName: "users" */ './views/posts/Show.vue')
+    },
+    {
       path: '/posts/:id/edit',
       name: 'editPost',
       component: () => import(/* webpackChunkName: "users" */ './views/posts/Form.vue'),
