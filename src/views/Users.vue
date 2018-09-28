@@ -29,7 +29,9 @@
             </template>
         </v-data-table>
 
-    
+         <div class="text-xs-center pt-2">
+            <v-pagination v-model="page" :length="pages"></v-pagination>
+        </div>
 
         <v-dialog v-model="dialog" persistent max-width="500px">
             <v-form ref="form" v-model="valid">
@@ -90,10 +92,14 @@ export default {
                 required: value => required(value) || 'Required.',
                 email: value => email(value) || 'Email invalid.'
             },
+            rowsPerPage: 5,
+            page: 1
         };
     },
-    beforeCreate(){
-        this.$store.dispatch('users/query');
+    mounted(){
+        this.$store.dispatch('users/query', {
+            page: this.page
+        });
     },        
     methods: {
         async submit(){
@@ -132,16 +138,21 @@ export default {
             this.user = {};
             this.confirmation = false;
             this.$refs.form.reset();
-        }
+        }        
     },
     watch: {
-        dialog(){
-            return this.dialog ? this.autofocus = true : this.autofocus = false;
+        page(value){
+            this.$store.dispatch('users/query', {
+                page: value
+            });
         }
     },
     computed:{
         rolesKeys(){
             return Object.keys(this.roles);
+        },
+        pages () {             
+            return Math.ceil(this.$store.state.users.count / this.rowsPerPage);
         }
     }
 }

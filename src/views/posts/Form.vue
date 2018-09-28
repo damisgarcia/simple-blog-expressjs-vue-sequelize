@@ -19,7 +19,7 @@ import S from 'string';
 import { required } from 'vuelidate/lib/validators';
 import { isUndefined } from 'lodash';
 
-import axios from 'axios';
+import Api from '@/services/API';
 
 import PostTypes from '@/types/post.types';
 
@@ -39,7 +39,7 @@ export default {
     },
     async beforeCreate(){
         if(!isUndefined(this.$route.params.id)){
-            let { data } = await axios.get(`/api/posts/${this.$route.params.id}`);
+            let { data } = await Api.get(`/posts/${this.$route.params.id}`);
             this.post = data;
         }
     },

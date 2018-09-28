@@ -27,6 +27,10 @@
                 </td>
             </template>
         </v-data-table>
+
+        <div class="text-xs-center pt-2">
+            <v-pagination v-model="page" :length="pages"></v-pagination>
+        </div>
         
 
         <v-dialog v-model="confirmation" persistent max-width="500px">
@@ -58,11 +62,15 @@ export default {
                 { text: 'Body', value: 'body' },
                 { text: 'Status', value: 'status' },
                 { text: 'Actions', value: 'actions', sortable: false, align: 'right', }
-            ]
+            ],
+            rowsPerPage: 5,
+            page: 1
         }
     },
-    beforeCreate(){
-        this.$store.dispatch('posts/query');
+    mounted(){
+        this.$store.dispatch('posts/query',{
+            page: this.page
+        });
     },
     methods: {
         openConfirmation(post){
@@ -80,6 +88,18 @@ export default {
             } else{
                 return "";
             }
+        }
+    },
+    watch: {
+        page(value){
+            this.$store.dispatch('posts/query', {
+                page: value
+            });
+        }
+    },
+    computed: {
+        pages () { 
+            return Math.ceil(this.$store.state.posts.count / this.rowsPerPage);
         }
     }
 }

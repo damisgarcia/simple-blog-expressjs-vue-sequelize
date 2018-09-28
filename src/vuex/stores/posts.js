@@ -5,12 +5,13 @@ import { findIndex } from 'lodash';
 const baseurl = '/api';
 
 const state = {
-    data: []
+    data: [],
+    count: 0
 }
 
 const actions = {    
-    async query({commit}){
-        let { data } = await axios.get(`${baseurl}/posts`);
+    async query({commit}, query){
+        let { data } = await axios.get(`${baseurl}/posts?page=${query.page}`);
         commit('query', data);
     },
     async create({ commit }, payload) {
@@ -29,10 +30,12 @@ const actions = {
 
 const mutations = {
     query(state, payload){
-        state.data = payload;
+        state.data = payload.result;
+        state.count = payload.count;
     },
     create(state, payload) {
         state.data.push(payload);
+        state.count++;
     },
     update(state, payload) {
         let indexOf = findIndex(state.data, { id: payload.id })
@@ -43,6 +46,7 @@ const mutations = {
         if (payload.success) {
             state.data.splice(indexOf, 1);
         }
+        state.count--;
     }
 }
 

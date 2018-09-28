@@ -1,5 +1,6 @@
 const { pick } = require('lodash');
 const { Post } = require('../database/models');
+const { paginate } = require('../database/helpers/Pagination');
 const { Status } = require('../index.const');
 
 const PostsController = function(app){
@@ -13,7 +14,7 @@ const PostsController = function(app){
     });
 
     app.get('/posts', (req, res) => {
-        Post.findAll().then(posts => {
+        paginate(Post, req.query.page).then(posts => {
             res.status(Status.OK).send(posts);
         });        
     });

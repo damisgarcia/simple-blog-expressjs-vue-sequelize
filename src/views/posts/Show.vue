@@ -8,7 +8,7 @@
     </v-container>
 </template>
 <script>
-import axios from 'axios';
+import Api from '@/services/API';
 export default {
     data(){
         return{
@@ -16,7 +16,7 @@ export default {
         }
     },
     async beforeCreate(){
-        let { data } = await axios.get(`/api/posts/${this.$route.params.id}`);
+        let { data } = await Api.get(`/posts/${this.$route.params.id}`);
         this.post = data;
     }
 }

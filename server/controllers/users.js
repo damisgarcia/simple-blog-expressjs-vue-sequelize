@@ -1,4 +1,6 @@
 const { User } = require('../database/models');
+const { paginate } = require('../database/helpers/Pagination');
+
 const { Status } = require('../index.const');
 
 const { pick} = require('lodash');
@@ -13,9 +15,9 @@ const UsersController = (app) => {
     });
     
     app.get('/users', (req, res) => {
-        User.findAll().then(users => {
+        paginate(User, req.query.page).then(users => {
             res.status(Status.OK).send(users);
-        });        
+        });
     });
 
     app.post('/users', (req, res) => {
